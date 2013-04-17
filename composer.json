@@ -1,5 +1,5 @@
 {
-    "name": "busk/moip-php",
+    "name": "busk/moip-assinaturas-php",
     "description": "spix moip client",
     "require": {
         "guzzle/guzzle": "~3.1"
