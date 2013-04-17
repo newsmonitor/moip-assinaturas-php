@@ -10,18 +10,21 @@ namespace Moip;
 use Guzzle\Http\Client;
 use Guzzle\Plugin\CurlAuth\CurlAuthPlugin;
 /**
- * Moip Plans
+ * Moip
  *
  */
 class Moip
 {
-    public $apiUrl = 'https://sandbox.moip.com.br';
+    protected $apiUrl = '';
     public $apiVersion = 'v1';
 
-    private $client;
+    protected $client;
 
-    public function __construct($user, $pass)
+    public function __construct($user, $pass, $env = 'sandbox')
     {
+        if($env) {
+            $this->apiUrl = "https://{$env}.moip.com.br";
+        }
         $this->client = new Client($this->apiUrl);
         // Add the auth plugin to the client object
         $authPlugin = new CurlAuthPlugin($user, $pass);
@@ -35,13 +38,16 @@ class Moip
 
     public function __call($method, $arguments)
     {
-        if(preg_match('/^get|post|put|patch|delete|head|options|link|unlink|purge$/i', $method)) {
+        if(preg_match('/^get|post|put|delete$/i', $method)) {
             $call = call_user_func_array (array($this->client(), $method) , $arguments);
-            return $call->send();
+            $call = $call->send();
+            try {
+                $response =  $call->json();
+            } catch (\Guzzle\Common\Exception\RuntimeException $e) {
+                $response =  $call->getBody();
+            }
+
         }
 
     }
-
-
-
 }

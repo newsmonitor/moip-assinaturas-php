@@ -13,16 +13,22 @@ use Guzzle\Plugin\CurlAuth\CurlAuthPlugin;
  * Moip Customers
  *
  */
-class Customer extends Moip
+class Customer
 {
+    private $repository;
+
+    public function __construct(Moip $repository)
+    {
+        $this->repository = $repository;
+    }
     public function all()
     {
-        return $this->get("assinaturas/{$this->apiVersion}/customers")->json();
+        return $this->repository->get("assinaturas/{$this->repository->apiVersion}/customers");
     }
 
     public function find($code)
     {
-        return $this->get("assinaturas/{$this->apiVersion}/customers/{$code}")->json();
+        return $this->repository->get("assinaturas/{$this->repository->apiVersion}/customers/{$code}");
     }
 
 }

@@ -7,6 +7,8 @@
  * @copyright 2013 spix discovery company (http://spixdiscovery.com/)
  */
 use Moip\Customer;
+use Moip\Moip;
+use Mockery as m;
 /**
  * Moip Tests
  *
@@ -23,8 +25,11 @@ class MoipCustomerTest extends \Moip\Tests\TestCase
 
     public function testGetCustomerByCode()
     {
-        //$customer = New Customer('token', 'key');
-        //var_dump($customer->find(1));
+        $mock = m::mock('Moip\Moip');
+        $mock->shouldReceive('get')->with("assinaturas/v1/customers/1")->andReturn(array());
+
+        $customer = new Customer($mock);
+        $this->assertInternalType('array',  $customer->find(1));
     }
 
 }
