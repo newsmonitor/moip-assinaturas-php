@@ -6,14 +6,12 @@
  *
  * @copyright 2013 spix discovery company (http://spixdiscovery.com/)
  */
-use Moip\Customer;
-use Moip\Moip;
 use Mockery as m;
 /**
  * Moip Tests
  *
  */
-class MoipCustomerTest extends \Moip\Tests\TestCase
+class MoipCustomersTest extends \Moip\Tests\TestCase
 {
 
     public function testGetAllCustomers()
@@ -26,10 +24,15 @@ class MoipCustomerTest extends \Moip\Tests\TestCase
     public function testGetCustomerByCode()
     {
         $mock = m::mock('Moip\Moip');
-        $mock->shouldReceive('get')->with("assinaturas/v1/customers/1")->andReturn(array());
+        $mock->shouldReceive('get')->with("assinaturas/v1/customers/1")->andReturn(new Stdclass);
 
-        $customer = new Customer($mock);
-        $this->assertInternalType('array',  $customer->find(1));
+        $customer = new \Moip\Customers($mock);
+        $this->assertInternalType('object',  $customer->find(1));
+    }
+
+    public function testAddCustomer()
+    {
+
     }
 
 }

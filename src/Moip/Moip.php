@@ -38,14 +38,24 @@ class Moip
 
     public function __call($method, $arguments)
     {
-        if(preg_match('/^get|post|put|delete$/i', $method)) {
+
+        if( in_array( $method, array('get', 'post', 'put', 'delete')) ) {
             $call = call_user_func_array (array($this->client(), $method) , $arguments);
-            $call = $call->send();
+            $call->setHeader('Accept', 'application/json');
+            $call->setHeader('Content-Type', 'application/json');
+            try {
+                $call = $call->send();
+            } catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
+                $err = new \StdClass;
+                $err->msg = 'error';
+                return  $err;
+            }
             try {
                 $response = json_decode(json_encode($call->json()));
             } catch (\Guzzle\Common\Exception\RuntimeException $e) {
                 $response =  $call->getBody();
             }
+
             return $response;
 
         }

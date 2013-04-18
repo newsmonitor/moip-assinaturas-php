@@ -10,10 +10,10 @@ namespace Moip;
 use Guzzle\Http\Client;
 use Guzzle\Plugin\CurlAuth\CurlAuthPlugin;
 /**
- * Moip Customers
+ * Moip Invoices
  *
  */
-class Customer
+class Invoices
 {
     private $repository;
 
@@ -21,14 +21,18 @@ class Customer
     {
         $this->repository = $repository;
     }
-    public function all()
+    public function subscription($code)
     {
-        return $this->repository->get("assinaturas/{$this->repository->apiVersion}/customers");
+        return $this->repository->get("assinaturas/{$this->repository->apiVersion}/subscriptions/{$code}/invoices");
     }
 
     public function find($code)
     {
-        return $this->repository->get("assinaturas/{$this->repository->apiVersion}/customers/{$code}");
+        return $this->repository->get("assinaturas/{$this->repository->apiVersion}/invoices/{$code}");
     }
 
+    public function retry($code)
+    {
+        return $this->repository->post("assinaturas/{$this->repository->apiVersion}/invoices/{$code}/retry");
+    }
 }
