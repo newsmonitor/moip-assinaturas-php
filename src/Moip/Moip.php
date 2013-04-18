@@ -46,6 +46,7 @@ class Moip
             } catch (\Guzzle\Common\Exception\RuntimeException $e) {
                 $response =  $call->getBody();
             }
+            return $response;
 
         }
 
