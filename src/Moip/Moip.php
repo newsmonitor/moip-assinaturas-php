@@ -42,11 +42,10 @@ class Moip
             $call = call_user_func_array (array($this->client(), $method) , $arguments);
             $call = $call->send();
             try {
-                $response =  $call->json();
-            } catch (\Guzzle\Common\Exception\RuntimeException $e) {
-                $response =  $call->getBody();
+                $response = $call->json();
+            } catch (Exception $e) {
+                return $call->send()->body();
             }
-            return $response;
 
         }
 
