@@ -23,14 +23,7 @@ class Plans
     }
     public function all()
     {
-        //return $this->repository->get("assinaturas/{$this->repository->apiVersion}/plans");
-        //fix api bug
-        $request = $this->repository->get("assinaturas/{$this->repository->apiVersion}/plans");
-        $plans = array();
-        foreach ($request->plans as $key => $value) {
-            $plans[$key] = json_decode($value);
-        }
-        return $plans;
+        return $this->repository->get("assinaturas/{$this->repository->apiVersion}/plans");
     }
 
     public function find($code)
