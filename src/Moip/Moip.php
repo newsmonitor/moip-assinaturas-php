@@ -46,9 +46,7 @@ class Moip
             try {
                 $call = $call->send();
             } catch (\Guzzle\Http\Exception\ClientErrorResponseException $e) {
-                $err = new \StdClass;
-                $err->msg = 'error';
-                return  $err;
+                return $e->getResponse()->json();
             }
             try {
                 $response = json_decode(json_encode($call->json()));
